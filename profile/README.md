@@ -1,5 +1,7 @@
 # 실시간 역경매 서비스
 
+![GigaChal.png](GigaChal.png)
+
 > 구매자가 원하는 물품을 등록하면, 판매자들이 경쟁적으로 가격을 낮춰 입찰하는 **역경매(Reverse Auction)** 서비스입니다.
 
 ```
@@ -12,7 +14,13 @@
 
 ## 1. 조원 소개
 
-자기소개 추가 바람
+ex)
+
+| 사진 | 이름 | 역할 | 담당 기능 |
+| :---: | --- | --- | --- |
+| ![minky](minky.png) | [윤민기](https://github.com/minky5004) | 조원 | AI 상담 챗봇, 모니터링, 리뷰 이미지, 기타 인프라 |
+
+
 
 ---
 
@@ -24,6 +32,9 @@
 
 별도 AI 채팅방에서 **DeepSeek V3** 기반 AI가 실시간 시세, 판매자 신뢰도, 경쟁 입찰 현황 등을 분석해드립니다.
 DB의 실제 거래 데이터를 **Tool Calling + RAG**로 실시간 조회하므로 hallucination 없이 플랫폼 데이터를 정확하게 안내합니다.
+
+
+![User Flow](<./UserFlow.png>)
 
 ---
 
@@ -76,17 +87,21 @@ DB의 실제 거래 데이터를 **Tool Calling + RAG**로 실시간 조회하�
 
 ## 4. 아키텍처
 
-사진 첨부 예정
+![Architecture](./Architecture.png)
 
 ---
 
 ## 5. ERD
 
-사진 첨부 예정
+![ERD](./ERD.png)
+
+---
 
 ---
 
 ## 6. 패키지 구조
+
+### auction (메인 서버)
 
 ```
 com.example.auction/
@@ -111,6 +126,35 @@ com.example.auction/
     └── notification/ # Redis Pub/Sub 알림 발행
 ```
 
+### auction-lambda
+
+```
+src/com/example/lambda/
+├── AuctionLambda.java        # EventBridge 트리거 → SQS 지연 메시지 발행
+└── AuctionSqsLambda.java     # SQS 트리거 → RDS 상태 변경 + Redis Pub/Sub 발행
+```
+
+### auction-notification (알림 서버)
+
+```
+com.example.auctionnotification/
+├── common/
+│   ├── config/
+│   │   ├── redis/     # RedisConfig, RedisSubscriberConfig (Pub/Sub 구독 설정)
+│   │   └── security/  # JWT 인증 필터, Spring Security
+│   ├── dto/           # BaseResponse
+│   └── exception/     # GlobalExceptionHandler, ServiceErrorException
+│
+└── notification/
+    ├── controller/    # SSE 구독, 알림 조회 / 읽음 / 삭제
+    ├── dto/           # NotificationMessage, NotificationResponse
+    ├── entity/        # Notification
+    ├── enums/         # NotificationType
+    ├── listener/      # NotificationMessageListener (Redis Pub/Sub 수신)
+    ├── repository/    # NotificationRepository
+    └── service/       # NotificationService, SseEmitterService
+```
+
 ### 도메인 상태 흐름
 
 ```
@@ -119,12 +163,23 @@ com.example.auction/
     │              └──► NO_BID (유찰)
     └──► CANCELLED (READY 상태 + 시작 10분 전까지)
 
+경매 시작 흐름
+  EventBridge Scheduler
+    → AuctionLambda (SQS 지연 메시지 발행)
+    → AuctionSqsLambda (SQS 소비)
+    → auctions.status: READY → ACTIVE
+    → Redis auction-events 채널 발행 (AUCTION_STARTED)
+    → Redis auction:notification 채널 발행 → 알림 서버 → SSE
+
 낙찰 흐름
-  Lambda 실행
-    → auction_results 생성
-    → Redis Pub/Sub 발행
-    → AuctionEmbedListener
-    → pgvector 임베딩 저장 (RAG 검색 가능)
+  EventBridge Scheduler
+    → AuctionSqsLambda (SQS 소비)
+    → auctions.status: ACTIVE → DONE / NO_BID
+    → auction_results 생성, bids.status: CLOSED
+    → Redis auction-events 채널 발행 (AUCTION_ENDED / AUCTION_NO_BID)
+    → Redis cache eviction (단건 + 목록)
+    → Redis auction:notification 채널 발행 → 알림 서버 → SSE
+    → AuctionEmbedListener → pgvector 임베딩 저장 (RAG 검색 가능)
 ```
 
 ---
@@ -153,7 +208,20 @@ com.example.auction/
 - 입찰 성공 시 실시간 알림 자동 발행 (NEW_BID / LOWEST_BID_UPDATED)
 
 ### 4. 실시간 알림
-- Redis Pub/Sub → 별도 알림 서버 → SSE로 클라이언트에 실시간 전달
+
+Lambda → Redis `auction:notification` 채널 → 알림 서버 → SSE로 클라이언트에 실시간 전달
+
+| 알림 타입 | 발생 시점 | 수신자 |
+|-----------|-----------|--------|
+| `AUCTION_STARTED` | 경매 시작 | 경매 등록자 |
+| `NEW_BID` | 새 입찰 등록 | 경매 등록자 |
+| `LOWEST_BID_UPDATED` | 더 낮은 입찰 등록 | 기존 최저가 입찰자 |
+| `AUCTION_CLOSED_WIN` | 경매 낙찰 | 낙찰자 |
+| `AUCTION_CLOSED_BUYER` | 경매 낙찰 | 판매자 (경매 등록자) |
+| `AUCTION_NO_BID` | 유찰 | 경매 등록자 |
+
+- SSE 연결 유지: 연결 타임아웃 5분, 30초마다 ping 전송으로 연결 유지
+- 알림은 PostgreSQL에 저장 → 재접속 시 누락 없이 조회 가능
 
 ### 5. 유저간 실시간 채팅
 - 낙찰 후 구매자-판매자 1:1 채팅방 자동 생성
@@ -195,6 +263,8 @@ SSE 스트리밍으로 실시간 응답을 수신하며, Tool Calling과 RAG를 
 
 ### 8. CI/CD
 
+#### auction (메인 서버) / auction-notification (알림 서버)
+
 **CI** — main, dev 브랜치 push/PR 시 자동 실행
 - JDK 21 (Corretto) + Gradle 빌드 + 전체 테스트 통과 확인
 
@@ -202,6 +272,15 @@ SSE 스트리밍으로 실시간 응답을 수신하며, Tool Calling과 RAG를 
 - Spring Boot JAR 빌드 → arm64 Docker 이미지 → AWS ECR push
 - ECS 태스크 정의 등록 → ECS 서비스 강제 업데이트 (무중단 배포)
 - AWS 자격증명: OIDC (키 없이 역할 기반 인증)
+
+#### auction-lambda
+
+**CD** — main, dev 브랜치 push 시 자동 배포
+- JDK 21 (Corretto) + Gradle JAR 빌드
+- AWS OIDC 인증 후 3개 Lambda 함수에 동시 배포
+  - `auction-sqs-handler` (EventBridge 트리거)
+  - `auction-sqs-consumer` (SQS 소비 + RDS/Redis 처리)
+  - `auction-scheduler` (스케줄러 핸들러)
 
 ---
 
