@@ -18,57 +18,33 @@
   <table>
     <tbody>
       <tr>
-        <td align="center" style="padding: 20px; vertical-align: top;">
-          <img src="https://github.com/hhjo96.png" width="120px" style="border-radius: 50%;" alt=""/>
-          <div style="margin-top: 10px; line-height: 1.4;">
-            <div style="height: 50px;">
-              <b>팀장</b><br />
-              <a href="https://github.com/hhjo96" style="font-size: 16px;">조현희</a>
-            </div>
-            <hr style="border: none; border-top: 1px solid #ccc; margin: 8px 0;" />
-            <div style="font-size: 13px;">
-              -
-            </div>
-          </div>
+        <td align="center" valign="top" width="25%">
+          <img src="https://github.com/hhjo96.png" width="120" style="border-radius: 50%;" alt="조현희"/><br /><br />
+          <b>팀장</b><br />
+          <a href="https://github.com/hhjo96">조현희</a><br />
+          <sub>──────────</sub><br />
+          -
         </td>
-        <td align="center" style="padding: 20px; vertical-align: top;">
-          <img src="https://github.com/minky5004.png" width="120px" style="border-radius: 50%;" alt=""/>
-          <div style="margin-top: 10px; line-height: 1.4;">
-            <div style="height: 50px;">
-              <b>팀원</b><br />
-              <a href="https://github.com/minky5004" style="font-size: 16px;">윤민기</a>
-            </div>
-            <hr style="border: none; border-top: 1px solid #ccc; margin: 8px 0;" />
-            <div style="font-size: 13px;">
-              AI 상담 챗봇<br />모니터링<br />리뷰 이미지<br />기타 인프라
-            </div>
-          </div>
+        <td align="center" valign="top" width="25%">
+          <img src="https://github.com/minky5004.png" width="120" style="border-radius: 50%;" alt="윤민기"/><br /><br />
+          <b>팀원</b><br />
+          <a href="https://github.com/minky5004">윤민기</a><br />
+          <sub>──────────</sub><br />
+          AI 상담 챗봇<br />모니터링<br />리뷰 이미지<br />기타 인프라
         </td>
-        <td align="center" style="padding: 20px; vertical-align: top;">
-          <img src="https://github.com/imprity.png" width="120px" style="border-radius: 50%;" alt=""/>
-          <div style="margin-top: 10px; line-height: 1.4;">
-            <div style="height: 50px;">
-              <b>팀원</b><br />
-              <a href="https://github.com/imprity" style="font-size: 16px;">조성진</a>
-            </div>
-            <hr style="border: none; border-top: 1px solid #ccc; margin: 8px 0;" />
-            <div style="font-size: 13px;">
-              CI/CD<br />경매 검색 및 조회 구현
-            </div>
-          </div>
+        <td align="center" valign="top" width="25%">
+          <img src="https://github.com/imprity.png" width="120" style="border-radius: 50%;" alt="조성진"/><br /><br />
+          <b>팀원</b><br />
+          <a href="https://github.com/imprity">조성진</a><br />
+          <sub>──────────</sub><br />
+          CI/CD<br />경매 검색 및 조회 구현
         </td>
-        <td align="center" style="padding: 20px; vertical-align: top;">
-          <img src="https://github.com/soomin0209.png" width="120px" style="border-radius: 50%;" alt=""/>
-          <div style="margin-top: 10px; line-height: 1.4;">
-            <div style="height: 50px;">
-              <b>팀원</b><br />
-              <a href="https://github.com/soomin0209" style="font-size: 16px;">김수민</a>
-            </div>
-            <hr style="border: none; border-top: 1px solid #ccc; margin: 8px 0;" />
-            <div style="font-size: 13px;">
-              인증/인가<br />카테고리<br />리뷰<br />실시간 알림<br />실시간 채팅<br />가상스레드 구현
-            </div>
-          </div>
+        <td align="center" valign="top" width="25%">
+          <img src="https://github.com/soomin0209.png" width="120" style="border-radius: 50%;" alt="김수민"/><br /><br />
+          <b>팀원</b><br />
+          <a href="https://github.com/soomin0209">김수민</a><br />
+          <sub>──────────</sub><br />
+          인증/인가<br />카테고리<br />리뷰<br />실시간 알림<br />실시간 채팅<br />가상스레드 구현
         </td>
       </tr>
     </tbody>
