@@ -12,14 +12,68 @@
 
 ---
 
-## 1. 조원 소개
+## 1. 팀원 소개
 
-ex)
-
-| 사진 | 이름 | 역할 | 담당 기능 |
-| :---: | --- | --- | --- |
-| ![minky](minky.png) | [윤민기](https://github.com/minky5004) | 조원 | AI 상담 챗봇, 모니터링, 리뷰 이미지, 기타 인프라 |
-
+<div align="center">
+  <table>
+    <tbody>
+      <tr>
+        <td align="center" style="padding: 20px; vertical-align: top;">
+          <img src="https://github.com/hhjo96.png" width="120px" style="border-radius: 50%;" alt=""/>
+          <div style="margin-top: 10px; line-height: 1.4;">
+            <div style="height: 50px;">
+              <b>팀장</b><br />
+              <a href="https://github.com/hhjo96" style="font-size: 16px;">조현희</a>
+            </div>
+            <hr style="border: none; border-top: 1px solid #ccc; margin: 8px 0;" />
+            <div style="font-size: 13px;">
+              -
+            </div>
+          </div>
+        </td>
+        <td align="center" style="padding: 20px; vertical-align: top;">
+          <img src="https://github.com/minky5004.png" width="120px" style="border-radius: 50%;" alt=""/>
+          <div style="margin-top: 10px; line-height: 1.4;">
+            <div style="height: 50px;">
+              <b>팀원</b><br />
+              <a href="https://github.com/minky5004" style="font-size: 16px;">윤민기</a>
+            </div>
+            <hr style="border: none; border-top: 1px solid #ccc; margin: 8px 0;" />
+            <div style="font-size: 13px;">
+              AI 상담 챗봇<br />모니터링<br />리뷰 이미지<br />기타 인프라
+            </div>
+          </div>
+        </td>
+        <td align="center" style="padding: 20px; vertical-align: top;">
+          <img src="https://github.com/imprity.png" width="120px" style="border-radius: 50%;" alt=""/>
+          <div style="margin-top: 10px; line-height: 1.4;">
+            <div style="height: 50px;">
+              <b>팀원</b><br />
+              <a href="https://github.com/imprity" style="font-size: 16px;">조성진</a>
+            </div>
+            <hr style="border: none; border-top: 1px solid #ccc; margin: 8px 0;" />
+            <div style="font-size: 13px;">
+              CI/CD<br />경매 검색 및 조회 구현
+            </div>
+          </div>
+        </td>
+        <td align="center" style="padding: 20px; vertical-align: top;">
+          <img src="https://github.com/soomin0209.png" width="120px" style="border-radius: 50%;" alt=""/>
+          <div style="margin-top: 10px; line-height: 1.4;">
+            <div style="height: 50px;">
+              <b>팀원</b><br />
+              <a href="https://github.com/soomin0209" style="font-size: 16px;">김수민</a>
+            </div>
+            <hr style="border: none; border-top: 1px solid #ccc; margin: 8px 0;" />
+            <div style="font-size: 13px;">
+              인증/인가<br />카테고리<br />리뷰<br />실시간 알림<br />실시간 채팅<br />가상스레드 구현
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
 ---
@@ -30,11 +84,10 @@ ex)
 
 ### 핵심 차별점 — AI 상담 챗봇
 
-별도 AI 채팅방에서 **DeepSeek V3** 기반 AI가 실시간 시세, 판매자 신뢰도, 경쟁 입찰 현황 등을 분석해드립니다.
+별도 AI 채팅방에서 **GPT-4o** 기반 AI가 실시간 시세, 판매자 신뢰도, 경쟁 입찰 현황 등을 분석해드립니다.
 DB의 실제 거래 데이터를 **Tool Calling + RAG**로 실시간 조회하므로 hallucination 없이 플랫폼 데이터를 정확하게 안내합니다.
 
-
-![User Flow](<./UserFlow.png>)
+![User Flow](./UserFlow.png)
 
 ---
 
@@ -61,7 +114,7 @@ DB의 실제 거래 데이터를 **Tool Calling + RAG**로 실시간 조회하�
 <img src="https://img.shields.io/badge/Amazon%20EventBridge-FF4F8B?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20SQS-FF4F8B?style=for-the-badge&logo=amazonsqs&logoColor=white">
 
 ### **AI Model**
-<img src="https://img.shields.io/badge/DeepSeek%20V3-4D6BFE?style=for-the-badge&logo=deepseek&logoColor=white"> <img src="https://img.shields.io/badge/OpenAI%20Embedding-412991?style=for-the-badge&logo=openai&logoColor=white">
+<img src="https://img.shields.io/badge/OpenAI%20Embedding-412991?style=for-the-badge&logo=openai&logoColor=white">
 
 ### **Infra / Cloud**
 <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20ECS-FF9900?style=for-the-badge&logo=amazonecs&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20ECR-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white"> <img src="https://img.shields.io/badge/Amazon%20S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white"> <img src="https://img.shields.io/badge/AWS%20Lambda-FF9900?style=for-the-badge&logo=awslambda&logoColor=white"> <img src="https://img.shields.io/badge/CloudFront-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/Route%2053-8C4FFF?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/ElastiCache-C925D1?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/NAT%20Gateway-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/AWS%20IAM-DD344C?style=for-the-badge&logo=amazonaws&logoColor=white">
@@ -94,8 +147,6 @@ DB의 실제 거래 데이터를 **Tool Calling + RAG**로 실시간 조회하�
 ## 5. ERD
 
 ![ERD](./ERD.png)
-
----
 
 ---
 
@@ -158,28 +209,9 @@ com.example.auctionnotification/
 ### 도메인 상태 흐름
 
 ```
-경매 상태
-  READY ──► ACTIVE ──► DONE   (낙찰)
-    │              └──► NO_BID (유찰)
-    └──► CANCELLED (READY 상태 + 시작 10분 전까지)
-
-경매 시작 흐름
-  EventBridge Scheduler
-    → AuctionLambda (SQS 지연 메시지 발행)
-    → AuctionSqsLambda (SQS 소비)
-    → auctions.status: READY → ACTIVE
-    → Redis auction-events 채널 발행 (AUCTION_STARTED)
-    → Redis auction:notification 채널 발행 → 알림 서버 → SSE
-
-낙찰 흐름
-  EventBridge Scheduler
-    → AuctionSqsLambda (SQS 소비)
-    → auctions.status: ACTIVE → DONE / NO_BID
-    → auction_results 생성, bids.status: CLOSED
-    → Redis auction-events 채널 발행 (AUCTION_ENDED / AUCTION_NO_BID)
-    → Redis cache eviction (단건 + 목록)
-    → Redis auction:notification 채널 발행 → 알림 서버 → SSE
-    → AuctionEmbedListener → pgvector 임베딩 저장 (RAG 검색 가능)
+READY ──► ACTIVE ──► DONE   (낙찰)
+  │              └──► NO_BID (유찰)
+  └──► CANCELLED (READY 상태 + 시작 10분 전까지)
 ```
 
 ---
@@ -193,51 +225,31 @@ com.example.auctionnotification/
 ### 1. 회원 인증
 - JWT 기반 Stateless 인증 (Access 30분 / Refresh 7일)
 - 소셜 로그인: Google, Kakao, Naver OAuth2
-- 로그인 5회 실패 시 5분 계정 잠금 (Redis TTL)
-- Refresh Token 탈취 시 즉시 무효화
+- 로그인 5회 실패 시 5분 계정 잠금, Refresh Token 탈취 시 즉시 무효화
 
 ### 2. 경매
-- 등록 즉시 EventBridge Scheduler에 시작/종료 스케줄 자동 등록
+- EventBridge Scheduler로 시작/종료 스케줄 자동 등록, Lambda가 낙찰/유찰 자동 처리
 - Elasticsearch + PostgreSQL 이중 검색 (Nori 한국어 형태소 분석)
-- AWS Lambda가 종료 시각에 자동 낙찰 / 유찰 처리
-- Redis 캐싱으로 단건 / 목록 조회 성능 최적화
 
 ### 3. 입찰
 - Redisson 분산락으로 동시 입찰 경합 방지
-- 현재 최저가보다 낮은 가격만 등록 가능
-- 입찰 성공 시 실시간 알림 자동 발행 (NEW_BID / LOWEST_BID_UPDATED)
+- 현재 최저가보다 낮은 가격만 등록 가능, 입찰 시 실시간 알림 자동 발행
 
 ### 4. 실시간 알림
-
-Lambda → Redis `auction:notification` 채널 → 알림 서버 → SSE로 클라이언트에 실시간 전달
-
-| 알림 타입 | 발생 시점 | 수신자 |
-|-----------|-----------|--------|
-| `AUCTION_STARTED` | 경매 시작 | 경매 등록자 |
-| `NEW_BID` | 새 입찰 등록 | 경매 등록자 |
-| `LOWEST_BID_UPDATED` | 더 낮은 입찰 등록 | 기존 최저가 입찰자 |
-| `AUCTION_CLOSED_WIN` | 경매 낙찰 | 낙찰자 |
-| `AUCTION_CLOSED_BUYER` | 경매 낙찰 | 판매자 (경매 등록자) |
-| `AUCTION_NO_BID` | 유찰 | 경매 등록자 |
-
-- SSE 연결 유지: 연결 타임아웃 5분, 30초마다 ping 전송으로 연결 유지
-- 알림은 PostgreSQL에 저장 → 재접속 시 누락 없이 조회 가능
+- Lambda → Redis Pub/Sub → 알림 서버 → SSE로 클라이언트에 실시간 전달
+- 알림은 PostgreSQL에 저장되어 재접속 시에도 누락 없이 조회 가능
 
 ### 5. 유저간 실시간 채팅
 - 낙찰 후 구매자-판매자 1:1 채팅방 자동 생성
-- WebSocket + STOMP + SockJS 기반, JWT 인증 적용
-- Redis Pub/Sub 브로커로 다중 서버 인스턴스 간 메시지 공유
+- WebSocket + STOMP + SockJS, Redis Pub/Sub으로 다중 서버 인스턴스 간 메시지 공유
 
 ### 6. 리뷰
-- 낙찰 경매 당사자(구매자/판매자)만 작성 가능
-- 별점(1~5) 필수, 이미지 선택 (S3 Presigned URL → CloudFront CDN)
-- 리뷰 작성/수정 후 pgvector 임베딩 자동 저장 → AI RAG 소스로 활용
+- 낙찰 경매 당사자(구매자/판매자)만 작성 가능, 별점 필수
+- S3 Presigned URL로 이미지 업로드, 리뷰 저장 시 pgvector 임베딩 자동 연동
 
 ### 7. AI 상담 챗봇
 
 SSE 스트리밍으로 실시간 응답을 수신하며, Tool Calling과 RAG를 통해 DB의 실제 데이터를 기반으로 답변합니다.
-
-**Tool Calling (8종)**
 
 | Tool | 역할 |
 |------|------|
@@ -250,37 +262,9 @@ SSE 스트리밍으로 실시간 응답을 수신하며, Tool Calling과 RAG를 
 | `getAuctionStatsByCategory` | 카테고리별 낙찰 통계 · 시세 분석 |
 | `searchAuctionDescriptions` | 낙찰 경매 상품 설명 의미 검색 (RAG) |
 
-**RAG (2종)**
-
-| 종류 | 대상 | 기법 |
-|------|------|------|
-| 후기 RAG | 판매자 리뷰 텍스트 | HyDE + Contextual Retrieval + 감성 방향 score 필터 |
-| 경매 설명 RAG | 낙찰 경매 상품명+설명 | 코사인 유사도 검색 (Lambda Pub/Sub 파이프라인) |
-
-- **HyDE**: 질문으로 가상 후기를 생성한 후 그 임베딩으로 검색 → P@3 성능 0.83 → 1.00 향상
-- **Contextual Retrieval**: 별점을 텍스트에 prepend하여 짧은 후기의 임베딩 품질 개선
-- **감성 방향 필터**: 부정 키워드 → score≤2 / 긍정 키워드 → score≥4 자동 필터
-
 ### 8. CI/CD
 
-#### auction (메인 서버) / auction-notification (알림 서버)
-
-**CI** — main, dev 브랜치 push/PR 시 자동 실행
-- JDK 21 (Corretto) + Gradle 빌드 + 전체 테스트 통과 확인
-
-**CD** — 수동 트리거 (배포할 커밋 해시 입력)
-- Spring Boot JAR 빌드 → arm64 Docker 이미지 → AWS ECR push
-- ECS 태스크 정의 등록 → ECS 서비스 강제 업데이트 (무중단 배포)
-- AWS 자격증명: OIDC (키 없이 역할 기반 인증)
-
-#### auction-lambda
-
-**CD** — main, dev 브랜치 push 시 자동 배포
-- JDK 21 (Corretto) + Gradle JAR 빌드
-- AWS OIDC 인증 후 3개 Lambda 함수에 동시 배포
-  - `auction-sqs-handler` (EventBridge 트리거)
-  - `auction-sqs-consumer` (SQS 소비 + RDS/Redis 처리)
-  - `auction-scheduler` (스케줄러 핸들러)
+GitHub Actions 기반으로 CI는 push/PR 시 자동 빌드 및 테스트, CD는 수동 트리거(커밋 해시 입력)로 ECR push → ECS 무중단 배포까지 진행합니다. Lambda는 push 시 자동 배포되며, AWS 인증은 OIDC(키 없이 역할 기반)로 처리합니다.
 
 ---
 
