@@ -19,28 +19,28 @@
     <tbody>
       <tr>
         <td align="center" valign="top" width="25%">
-          <img src="https://github.com/hhjo96.png" width="120" style="border-radius: 50%;" alt="조현희"/><br /><br />
+          <img src="https://wsrv.nl/?url=github.com/hhjo96.png&w=120&h=120&fit=cover&mask=circle" width="120" alt="조현희"/><br /><br />
           <b>팀장</b><br />
           <a href="https://github.com/hhjo96">조현희</a><br />
           <sub>──────────</sub><br />
-          -
+          입찰<br />부하테스트<br />경매 상태 자동화<br />Outbox 패턴 적용
         </td>
         <td align="center" valign="top" width="25%">
-          <img src="https://github.com/minky5004.png" width="120" style="border-radius: 50%;" alt="윤민기"/><br /><br />
+          <img src="https://wsrv.nl/?url=github.com/minky5004.png&w=120&h=120&fit=cover&mask=circle" width="120" alt="윤민기"/><br /><br />
           <b>팀원</b><br />
           <a href="https://github.com/minky5004">윤민기</a><br />
           <sub>──────────</sub><br />
           AI 상담 챗봇<br />모니터링<br />리뷰 이미지<br />기타 인프라
         </td>
         <td align="center" valign="top" width="25%">
-          <img src="https://github.com/imprity.png" width="120" style="border-radius: 50%;" alt="조성진"/><br /><br />
+          <img src="https://wsrv.nl/?url=github.com/imprity.png&w=120&h=120&fit=cover&mask=circle" width="120" alt="조성진"/><br /><br />
           <b>팀원</b><br />
           <a href="https://github.com/imprity">조성진</a><br />
           <sub>──────────</sub><br />
-          CI/CD<br />경매 검색 및 조회 구현
+          CI/CD<br />경매 검색 <br /> 경매 조회
         </td>
         <td align="center" valign="top" width="25%">
-          <img src="https://github.com/soomin0209.png" width="120" style="border-radius: 50%;" alt="김수민"/><br /><br />
+          <img src="https://wsrv.nl/?url=github.com/soomin0209.png&w=120&h=120&fit=cover&mask=circle" width="120" alt="김수민"/><br /><br />
           <b>팀원</b><br />
           <a href="https://github.com/soomin0209">김수민</a><br />
           <sub>──────────</sub><br />
