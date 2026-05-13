@@ -33,7 +33,7 @@
           AI 상담 챗봇<br />모니터링<br />리뷰 이미지<br />기타 인프라
         </td>
         <td align="center" valign="top" width="25%">
-          <a href="https://github.com/imprity"><img src="https://wsrv.nl/?url=raw.githubusercontent.com/GigaMak2/.github/main/profile/imprity.png&w=120&h=120&fit=cover&mask=circle" width="120" alt="조성진"/></a><br /><br />
+          <a href="https://github.com/imprity"><img src="https://wsrv.nl/?url=raw.githubusercontent.com/GigaMak2/.github/main/profile/imprity.png&w=120&h=120&fit=cover&mask=circle&v=2" width="120" alt="조성진"/></a><br /><br />
           <b>팀원</b><br />
           <a href="https://github.com/imprity">조성진</a><br />
           <sub>──────────</sub><br />
