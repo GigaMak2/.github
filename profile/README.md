@@ -19,7 +19,7 @@
     <tbody>
       <tr>
         <td align="center" valign="top" width="25%">
-          <a href="https://github.com/hhjo96"><img src="https://wsrv.nl/?url=github.com/hhjo96.png&w=120&h=120&fit=cover&mask=circle" width="120" alt="조현희"/></a><br /><br />
+          <a href="https://github.com/hhjo96"><img src="./hhjo.jpg" width="120" alt="조현희"/></a><br /><br />
           <b>팀장</b><br />
           <a href="https://github.com/hhjo96">조현희</a><br />
           <sub>──────────</sub><br />
