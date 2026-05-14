@@ -75,7 +75,7 @@ DB의 실제 거래 데이터를 **Tool Calling + RAG**로 실시간 조회하�
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=openjdk&logoColor=white"> <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
 
 ### **Backend**
-<img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> <img src="https://img.shields.io/badge/Spring%20Data%20JPA-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring%20AI-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring%20WebFlux-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/QueryDSL-0078D4?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> <img src="https://img.shields.io/badge/Spring%20Data%20JPA-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring%20AI-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/QueryDSL-0078D4?style=for-the-badge&logo=github&logoColor=white">
 
 ### **Security**
 <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white"> <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=jsonwebtokens&logoColor=white">
@@ -192,7 +192,9 @@ READY ──► ACTIVE ──► DONE   (낙찰)
 
 ---
 
-## 7. [API 명세서](https://www.notion.so/API-35df7cf0a20c80b885a0dd708f506cbb?showMoveTo=true&saveParent=true)
+## 7. API 명세서
+
+[![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://www.notion.so/API-35df7cf0a20c80b885a0dd708f506cbb?showMoveTo=true&saveParent=true)
 
 ---
 
@@ -244,4 +246,6 @@ GitHub Actions 기반으로 CI는 push/PR 시 자동 빌드 및 테스트, CD는
 
 ---
 
-## 9. [기술적 의사결정 / 트러블 슈팅 / 성능 개선](https://www.notion.so/35df7cf0a20c80119d48fa7435c3824d?source=copy_link)
+## 9. 기술적 의사결정 / 트러블 슈팅 / 성능 개선
+
+[![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://www.notion.so/35df7cf0a20c80119d48fa7435c3824d?source=copy_link)
