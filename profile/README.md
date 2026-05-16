@@ -126,79 +126,13 @@ DB의 실제 거래 데이터를 **Tool Calling + RAG**로 실시간 조회하�
 
 ---
 
-## 6. 패키지 구조
+## 6. API 명세서
 
-### auction (메인 서버)
-
-```
-com.example.auction/
-├── common/
-│   ├── config/       # Security, Redis, QueryDSL, WebSocket, Spring AI, pgvector
-│   ├── dto/          # BaseResponse, PageResponse
-│   ├── entity/       # BaseEntity (생성일, 수정일, 삭제일)
-│   └── exception/    # GlobalExceptionHandler, ServiceErrorException
-│
-└── domain/
-    ├── auth/         # 회원가입, 로그인, 토큰 갱신, 소셜 로그인
-    ├── user/         # 마이페이지, 비밀번호 변경, 회원 탈퇴
-    ├── auction/      # 경매 CRUD, 검색 (ES + pgvector), EventBridge 연동
-    │   ├── result/   # 낙찰 결과 조회
-    │   └── search/   # Elasticsearch 도큐먼트, 검색 서비스
-    ├── bid/          # 입찰 생성 (분산락), 입찰 조회
-    ├── category/     # 카테고리 트리 조회, 관리자 CRUD
-    ├── review/       # 리뷰 CRUD, S3 Presigned URL, RAG 임베딩 연동
-    ├── chat/         # AI 채팅방 CRUD, 메시지 목록 (커서 페이징), Redis 컨텍스트
-    ├── ai/           # SSE 스트리밍, Tool Calling 8종, RAG 2종, 임베딩 서비스
-    ├── userchat/     # 유저간 실시간 채팅 (WebSocket + Redis Pub/Sub)
-    └── notification/ # Redis Pub/Sub 알림 발행
-```
-
-### auction-lambda
-
-```
-src/com/example/lambda/
-├── AuctionLambda.java        # EventBridge 트리거 → SQS 지연 메시지 발행
-└── AuctionSqsLambda.java     # SQS 트리거 → RDS 상태 변경 + Redis Pub/Sub 발행
-```
-
-### auction-notification (알림 서버)
-
-```
-com.example.auctionnotification/
-├── common/
-│   ├── config/
-│   │   ├── redis/     # RedisConfig, RedisSubscriberConfig (Pub/Sub 구독 설정)
-│   │   └── security/  # JWT 인증 필터, Spring Security
-│   ├── dto/           # BaseResponse
-│   └── exception/     # GlobalExceptionHandler, ServiceErrorException
-│
-└── notification/
-    ├── controller/    # SSE 구독, 알림 조회 / 읽음 / 삭제
-    ├── dto/           # NotificationMessage, NotificationResponse
-    ├── entity/        # Notification
-    ├── enums/         # NotificationType
-    ├── listener/      # NotificationMessageListener (Redis Pub/Sub 수신)
-    ├── repository/    # NotificationRepository
-    └── service/       # NotificationService, SseEmitterService
-```
-
-### 도메인 상태 흐름
-
-```
-READY ──► ACTIVE ──► DONE   (낙찰)
-  │              └──► NO_BID (유찰)
-  └──► CANCELLED (READY 상태 + 시작 10분 전까지)
-```
+[API명세서 링크](https://www.notion.so/API-35df7cf0a20c80b885a0dd708f506cbb?showMoveTo=true&saveParent=true)
 
 ---
 
-## 7. API 명세서
-
-[![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://www.notion.so/API-35df7cf0a20c80b885a0dd708f506cbb?showMoveTo=true&saveParent=true)
-
----
-
-## 8. 주요 기능
+## 7. 주요 기능
 
 ### 1. 회원 인증
 - JWT 기반 Stateless 인증 (Access 30분 / Refresh 7일)
@@ -245,7 +179,163 @@ SSE 스트리밍으로 실시간 응답을 수신하며, Tool Calling과 RAG를 
 GitHub Actions 기반으로 CI는 push/PR 시 자동 빌드 및 테스트, CD는 수동 트리거(커밋 해시 입력)로 ECR push → ECS 무중단 배포까지 진행합니다. Lambda는 push 시 자동 배포되며, AWS 인증은 OIDC(키 없이 역할 기반)로 처리합니다.
 
 ---
+## 8. 트러블 슈팅 / 성능 개선 / 기술적 의사결정
 
-## 9. 기술적 의사결정 / 트러블 슈팅 / 성능 개선
 
-[![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://www.notion.so/35df7cf0a20c80119d48fa7435c3824d?source=copy_link)
+### 1. 경매 시작/종료 시간 지연 개선
+
+#### 문제 원인
+
+- 경매 시작/종료 스케줄링을 EventBridge → Lambda 직접 호출 방식으로 구현했을 때, 이벤트브릿지 자체 지연으로 인해 최대 1분의 지연이 발생함
+- 경매 시작/종료에 따른 경매 상태의 정확성이 보장되지 않음
+
+#### 기술 도입
+
+- SQS 지연 큐를 도입하여 EventBridge가 목표 시각 **5분 전**에 트리거되어 SQS 메시지에 딜레이를 동적으로 계산해서 설정
+
+#### SQS 적용 후 테스트 결과
+
+|  | 경매 A | 경매 B | 경매 C |
+|--|--------|--------|--------|
+| 목표 시작 | 13:36:30 | 15:16:30 | 16:10:30 |
+| 목표 종료 | 13:43:30 | 15:20:30 | 16:13:30 |
+| 적용 후 시작 | 13:36:30.446 (+0.446초) | 15:16:30.385 (+0.385초) | 16:10:30.612 (+0.612초) |
+| 적용 후 종료 | 13:43:30.330 (+0.330초) | 15:20:30.420 (+0.420초) | 16:13:30.365 (+0.371초) |
+| 적용 전 시작 | 13:36:36 (+6초) | 15:17:08 (+38초) | 16:11:08 (+38초) |
+| 적용 전 종료 | 13:43:59 (+29초) | 15:20:59 (+29초) | 16:14:03 (+33초) |
+
+#### 성능 개선 요약
+
+| 항목 | 적용 전 평균 | 적용 후 평균 | 개선율 |
+|------|------------|------------|--------|
+| 시작 지연 | 27.33초 | 0.48초 | **98.2% 감소** |
+| 종료 지연 | 30.33초 | 0.37초 | **98.8% 감소** |
+
+![Graph(1).png](Graph%281%29.png)
+
+---
+
+### 2. 가상 스레드 적용 — 알림 서버 처리량 개선
+
+#### 문제 원인
+
+- 알림 저장 요청에 `@Transactional` DB INSERT가 포함되어 DB 커넥션 획득까지 Tomcat 스레드가 블로킹 대기
+- HikariCP 기본 커넥션 풀(10개)과 Tomcat 기본 스레드(200개) 한계 초과 시 신규 요청을 받지 못하는 상태 발생
+- 플랫폼 스레드는 블로킹 대기 중에도 OS 스레드를 점유하기 때문에 동시 요청 증가 시 스레드 풀이 소진되는 구조적 한계 존재
+
+#### 기술 도입
+
+- 가상 스레드는 블로킹 구간에서 OS 스레드를 반환하므로 스레드 풀 소진 없이 더 많은 동시 요청 처리 가능
+
+#### 도입 전후 비교
+
+**처리량 (req/s)**
+
+| 구간 | 플랫폼 스레드 | 가상 스레드 | 차이 |
+|------|--------------|------------|------|
+| 100 VUs | 5,385 | 5,491 | ▲ 2% |
+| 300 VUs | 4,357 | 5,156 | **▲ 18%** |
+| Spike 500 VUs | 4,398 | 5,831 | **▲ 33%** |
+
+> 플랫폼 스레드는 300 VUs에서 100 VUs 대비 처리량이 오히려 **감소**(5,385 → 4,357)하는 구조적 한계를 보임
+
+**응답시간 — 300 VUs 기준**
+
+| 지표 | 플랫폼 스레드 | 가상 스레드 | 차이 |
+|------|--------------|------------|------|
+| 평균 응답시간 | 47.62ms | 36.71ms | ▼ 23% |
+| p(90) | 84.88ms | 52.8ms | **▼ 38%** |
+| p(95) | 92.46ms | 68.8ms | ▼ 26% |
+
+![Graph(2).png](Graph%282%29.png)
+
+#### 성능 개선 요약
+
+- **Spike 500 VUs 처리량**: 4,398 → 5,831 req/s (약 **33% 증가**)
+- **300 VUs p(90) 응답시간**: 84.88ms → 52.8ms (약 **38% 감소**)
+- 경매 시작/종료 이벤트 시 순간 트래픽 폭증에도 스레드 풀 소진 없이 안정적 처리
+
+---
+
+### 3. CloudFront CDN 도입 — 이미지 응답시간 개선
+
+#### 문제 원인
+
+- 리뷰 이미지가 S3(ap-northeast-2)에 저장되어 CDN 없이 서빙하면 모든 요청이 Origin 서버까지 왕복
+- 동일 이미지에 대한 반복 요청에도 매번 S3 네트워크 왕복이 발생해 불필요한 지연 누적
+
+#### 기술 도입
+
+- CloudFront 도입으로 첫 요청(MISS) 시에만 S3 Origin 접근, 이후 요청(HIT)은 서울 엣지에서 즉시 반환
+
+#### 도입 전후 비교
+
+시나리오: 동일 이미지에 연속 3회 요청 — 1번째(MISS) / 3번째(HIT) 비교, 5회 시도
+
+| 시도 | MISS — S3 Origin (ms) | HIT — 엣지 캐시 (ms) |
+|------|----------------------|---------------------|
+| 1차 | 117 | 44 |
+| 2차 | 128 | 49 |
+| 3차 | 198 | 48 |
+| 4차 | 106 | 40 |
+| 5차 | 99 | 37 |
+| **평균** | **130** | **44** |
+
+![Graph(3).png](Graph%283%29.png)
+
+#### 성능 개선 요약
+
+- **평균 응답시간**: 130ms → 44ms (약 **66% 감소**)
+- **최대 응답시간**: 198ms → 49ms (약 **75% 감소**)
+- S3 GET 요청 수 감소로 비용 절감, 동시 접속자 증가 시에도 Origin 부하 없이 처리 가능
+
+---
+
+### 4. HyDE 적용 후 검색 품질 저하
+
+#### 문제 원인
+
+- HyDE 단독 적용 시 LLM 출력에 설명 줄·번호가 포함되어 임베딩 쿼리에 노이즈 유입
+- `text-embedding-3-small`이 감성(긍/부정)보다 토픽(배송)을 강한 신호로 처리해 긍정 쿼리에서 ★1 불만 후기가 1위로 상승
+
+#### 해결 과정
+
+**1단계 — 3단계 폴백 후처리로 LLM 출력 노이즈 제거**
+
+```
+1단계: JSON 배열 파싱 성공 → 그대로 사용
+2단계: JSON 파싱 실패 → cleanHydeResult() 호출 (설명 줄·번호 제거)
+3단계: cleanHydeResult 빈 결과 → 원본 쿼리 폴백
+```
+
+**2단계 — 쿼리 방향성 감지 기반 score 필터**
+
+```
+"배송 빠른가요?"      → POSITIVE_KEYWORDS 매칭 → score ≥ 4 필터
+"배송 오래 걸리나요?" → NEGATIVE_KEYWORDS 매칭 → score ≤ 2 필터
+"배송 어때요?"        → 미매칭              → score 필터 없음
+```
+
+#### Precision@3 개선 결과
+
+| 쿼리 | Baseline | HyDE raw | HyDE + score 필터 |
+|------|----------|----------|-------------------|
+| 배송이 빠른가요? | 0.33 | 0.67 | **1.00** ▲ +0.67 |
+| 배송이 오래 걸리나요? | 1.00 | 1.00 | **1.00** |
+| 상품 상태가 설명과 같나요? | 1.00 | 1.00 | **1.00** |
+| 소통이 잘 되나요? | 1.00 | 1.00 | **1.00** |
+| **평균** | **0.83** | **0.92** | **1.00** ▲ +0.17 |
+
+#### 성능 개선 요약
+
+- **Precision@3 평균**: 0.83 → 1.00 (▲ +0.17)
+- HyDE는 단독으로 쓰면 역효과가 날 수 있고, score 필터와 조합했을 때 효과가 극대화됨
+- LLM 출력 형식은 프롬프트만으로 완전히 제어할 수 없으므로 코드 레벨 후처리가 반드시 필요
+
+---
+
+### 5. 추가 트러블슈팅 / 성능 개선 / 기술적 의사결정
+
+더 많은 트러블슈팅, 성능 개선, 기술적 의사결정 과정은 아래 노션 문서에서 확인할 수 있습니다.
+
+[상세 기술 문서](https://www.notion.so/35df7cf0a20c80119d48fa7435c3824d)
